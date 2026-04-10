@@ -1,0 +1,23 @@
+flowchart TD
+    A(Map desired state to Temporal activites) -->|Activity found for each config entry| B(Start each activity)
+    A -->|Unknown state change request| D(Report error to MSM)
+    D --> F{FAIL}
+    B --> C(Gather activity results)
+    C -->|Any activity fails| G(Roll back changes)
+    C -->|All activites succeed| H(Report success to MSM)
+    C -->|Activity x succeeds| I(Report activity x success to MSM)
+    I --> C
+    H --> E{SUCCESS}
+    G --> D
+
+
+flowchart TD
+    A(Map desired state to Temporal activites) -->|Activity found for each config entry| B(Start each activity)
+    A -->|Unknown state change request| D(Report error to MSM)
+    D --> F{FAIL}
+    B --> C(Gather activity results)
+    C -->|Any activity fails| D
+    C -->|All activites succeed| H(Report success to MSM)
+    C -->|Activity x succeeds| I(Report activity x success to MSM)
+    I --> C
+    H --> E{SUCCESS}

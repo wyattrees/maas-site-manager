@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant MAAS as Enrolled MAAS Site
+    participant MSM as MAAS Site Manager
+    actor User as MSM Admin
+
+    User->>MSM: Set site config
+
+    MAAS->>MSM: Heartbeat
+    MSM->>MAAS: Return config hash
+
+    alt config match
+        note over MAAS: no action taken
+    else config mismatch
+        note over MAAS: request full config
+        MAAS->>MSM: GET /site-config
+        activate MSM
+        MSM->>MAAS: Full, unhashed config
+        deactivate MSM
+        note over MAAS: Start config workflow
+    end
